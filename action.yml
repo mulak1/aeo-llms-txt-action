@@ -1,0 +1,21 @@
+name: 'AEO & llms.txt Readiness Gate'
+description: 'Validates or synthesizes standards-compliant /llms.txt files so ChatGPT, Perplexity, Claude, and Gemini cite your docs accurately.'
+author: 'ExactBaseline'
+branding:
+  icon: 'search'
+  color: 'green'
+inputs:
+  llms-file:
+    description: 'Path to llms.txt in repository'
+    required: false
+    default: 'public/llms.txt'
+  generate-if-missing:
+    description: 'Generate starter llms.txt from README.md when missing'
+    required: false
+    default: 'true'
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate or Synthesize llms.txt
+      shell: bash
+      run: python3 "${{ github.action_path }}/aeo_llms_check.py" "${{ inputs.llms-file }}" "${{ inputs.generate-if-missing }}"
